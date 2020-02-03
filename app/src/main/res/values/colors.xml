@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3982D8</color>
+    <color name="colorPrimaryDark">#3171bd</color>
+    <color name="colorAccent">#FF6B6B</color>
+
+    <color name="pokeballRed">#FF6B6B</color>
+    <color name="tagBgColor">#B7D8FF</color>
+    <color name="tagTextColor">#3982D8</color>
+</resources>
