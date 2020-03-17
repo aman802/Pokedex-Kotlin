@@ -1,5 +1,7 @@
 package com.aman802.pokedb.customViews
 
+import android.graphics.Color
+import android.os.Build
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -21,6 +23,13 @@ class tagView (view: View) {
         else {
             linearLayout.visibility = View.GONE
         }
+    }
+
+    fun setColor(color: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            linearLayout.background.setTint(color)
+        }
+        textView.setTextColor(Color.parseColor("#FFFFFF"))
     }
 
 }

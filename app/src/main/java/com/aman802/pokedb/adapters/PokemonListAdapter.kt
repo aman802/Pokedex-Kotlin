@@ -5,15 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.aman802.pokedb.Helper
 import com.aman802.pokedb.R
 import com.aman802.pokedb.customViews.tagView
 import com.aman802.pokedb.models.PokemonModel
 import com.squareup.picasso.Picasso
-import java.lang.StringBuilder
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PokemonListAdapter(context: Context, private var data: List<PokemonModel>) : BaseAdapter(), Filterable {
+class PokemonListAdapter(private var context: Context, private var data: Array<PokemonModel>) : BaseAdapter(), Filterable {
 
     private val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private var filteredData = data
@@ -32,24 +32,27 @@ class PokemonListAdapter(context: Context, private var data: List<PokemonModel>)
 
         val picasso = Picasso.get()
         picasso.load(pokemonModel.getImageURL()).into(imageView)
-        nameTextView.text = getCamelCaseName(pokemonModel.getName())
-        numberTextView.text = getThreeDigitNumber(pokemonModel.getID().toString())
+        nameTextView.text = Helper.getCamelCaseName(pokemonModel.getName())
+        numberTextView.text = Helper.getThreeDigitNumber(pokemonModel.getID().toString())
 
         val types = pokemonModel.getTypes()
         if (types.size == 1) {
-            type1.setText(getCamelCaseName(types[0]))
+            type1.setText(Helper.getCamelCaseName(types[0]))
+            type1.setColor(Helper.getColorForType(context, types[0]))
             type2.setVisibility(false)
         }
         else {
-            type1.setText(getCamelCaseName(types[0]))
-            type2.setText(getCamelCaseName(types[1]))
+            type1.setText(Helper.getCamelCaseName(types[1]))
+            type1.setColor(Helper.getColorForType(context, types[1]))
+            type2.setText(Helper.getCamelCaseName(types[0]))
+            type2.setColor(Helper.getColorForType(context, types[0]))
             type2.setVisibility(true)
         }
 
         return rowView
     }
 
-    override fun getItem(position: Int): Any {
+    override fun getItem(position: Int): PokemonModel? {
         return filteredData[position]
     }
 
@@ -59,35 +62,6 @@ class PokemonListAdapter(context: Context, private var data: List<PokemonModel>)
 
     override fun getCount(): Int {
         return filteredData.size
-    }
-
-    private fun getCamelCaseName(name: String): String {
-        val stringBuilder = StringBuilder()
-        for (i in name.indices) {
-            if (i == 0) {
-                stringBuilder.append(name[i].toUpperCase())
-            }
-            else {
-                stringBuilder.append(name[i])
-            }
-        }
-
-        return stringBuilder.toString()
-    }
-
-    private fun getThreeDigitNumber(number: String): String {
-        val stringBuilder = StringBuilder()
-        stringBuilder.append("(#")
-        if (number.length == 1) {
-            stringBuilder.append("00")
-        }
-        else if (number.length == 2) {
-            stringBuilder.append("0")
-        }
-        stringBuilder.append(number)
-        stringBuilder.append(")")
-
-        return stringBuilder.toString()
     }
 
     override fun getFilter(): Filter {
@@ -103,14 +77,19 @@ class PokemonListAdapter(context: Context, private var data: List<PokemonModel>)
             }
             else {
                 val filterString = constraint.toString().toLowerCase(Locale.US)
-                val newList = ArrayList<PokemonModel>()
+                val newList = ArrayList<PokemonModel?>()
                 for (pokemon in data) {
                     if (pokemon.getName().toLowerCase(Locale.US).contains(filterString)) {
                         newList.add(pokemon)
                     }
                 }
 
-                filterResults.values = newList
+                val newArray = arrayOfNulls<PokemonModel>(newList.size)
+                for (i in 0 until newList.size) {
+                    newArray[i] = newList[i]
+                }
+
+                filterResults.values = newArray
                 filterResults.count = newList.size
             }
 
@@ -118,7 +97,7 @@ class PokemonListAdapter(context: Context, private var data: List<PokemonModel>)
         }
 
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-            filteredData = results?.values as List<PokemonModel>
+            filteredData = results?.values as Array<PokemonModel>
             notifyDataSetChanged()
         }
 

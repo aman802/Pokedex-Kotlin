@@ -3,6 +3,8 @@
     <color name="colorPrimary">#3982D8</color>
     <color name="colorPrimaryDark">#3171bd</color>
     <color name="colorAccent">#FF6B6B</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 
     <color name="pokeballRed">#FF6B6B</color>
     <color name="tagBgColor">#B7D8FF</color>
@@ -10,4 +12,20 @@
 
     <color name="grassType">#55CF5A</color>
     <color name="poisonType">#8C4EDC</color>
+    <color name="bugType">#A1CE7D</color>
+    <color name="darkType">#000000</color>
+    <color name="dragonType">#5A58A6</color>
+    <color name="iceType">#5AF0E7</color>
+    <color name="electricType">#EFE05D</color>
+    <color name="normalType">#D6A017</color>
+    <color name="fairyType">#FD96FF</color>
+    <color name="fightingType">#CF5555</color>
+    <color name="psychicType">#EA53ED</color>
+    <color name="fireType">#FF7A00</color>
+    <color name="rockType">#D1B85C</color>
+    <color name="flyingType">#84A1EC</color>
+    <color name="steelType">#A5A5A5</color>
+    <color name="ghostType">#A68BDF</color>
+    <color name="waterType">#3941F1</color>
+    <color name="groundType">#CFCA55</color>
 </resources>
