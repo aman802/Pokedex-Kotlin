@@ -7,4 +7,7 @@
     <color name="pokeballRed">#FF6B6B</color>
     <color name="tagBgColor">#B7D8FF</color>
     <color name="tagTextColor">#3982D8</color>
+
+    <color name="grassType">#55CF5A</color>
+    <color name="poisonType">#8C4EDC</color>
 </resources>

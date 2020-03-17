@@ -2,8 +2,10 @@ package com.aman802.pokedb.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.widget.EditText
 import android.widget.ListView
 import android.widget.ProgressBar
 import com.aman802.pokedb.R
@@ -18,28 +20,52 @@ class MainActivity : AppCompatActivity() {
 
     private val tag: String = MainActivity::class.java.simpleName
     private val pokemonCount = 10
+    private lateinit var searchEditText: EditText
     private lateinit var pokemonListView: ListView
     private lateinit var progressBar: ProgressBar
-    private var pokemonList: ArrayList<PokemonModel> = ArrayList(pokemonCount)
+    private lateinit var pokemonList: ArrayList<PokemonModel>
+    private lateinit var filteredList: List<PokemonModel>
+    private lateinit var adapter: PokemonListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        pokemonList = ArrayList(pokemonCount)
+
         progressBar = findViewById(R.id.activity_main_progress_bar)
+        searchEditText = findViewById(R.id.activity_main_search_edit_text)
         pokemonListView = findViewById(R.id.activity_main_pokemon_list_view)
+
         progressBar.visibility = View.VISIBLE
-        fetchPokemonList(pokemonCount)
+
+        searchEditText.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                adapter.filter.filter(s.toString())
+            }
+
+        })
+
+        fetchPokemonList()
     }
 
-    private fun fetchPokemonList(size: Int) {
-        for (i in 1 until size+1) {
-            val url = "https://pokeapi.co/api/v2/pokemon/$i/"
+    private fun fetchPokemonList() {
+        for (i in 0 until pokemonCount) {
+            val id = i+1
+            val url = "https://pokeapi.co/api/v2/pokemon/$id/"
             VolleyService.makeVolleyRequest(this@MainActivity, url, Request.Method.GET, null, tag,
                 object : VolleyService.VolleyInterface {
                     override fun onSuccess(response: JSONObject) {
-                        pokemonList.add(PokemonModel(response))
-                        if (pokemonList.size == size) {
-                            val adapter = PokemonListAdapter(this@MainActivity, pokemonList)
+                        pokemonList.add(i, PokemonModel(response))
+                        if (pokemonList.size == pokemonCount) {
+                            filteredList = pokemonList
+                            adapter = PokemonListAdapter(this@MainActivity, filteredList)
                             pokemonListView.adapter = adapter
                             progressBar.visibility = View.GONE
                         }
