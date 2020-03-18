@@ -30,8 +30,6 @@ class PokemonListAdapter(private var context: Context, private var data: Array<P
 
         val pokemonModel = getItem(position) as PokemonModel
 
-        val picasso = Picasso.get()
-        picasso.load(pokemonModel.getImageURL()).into(imageView)
         nameTextView.text = Helper.getCamelCaseName(pokemonModel.getName())
         numberTextView.text = Helper.getThreeDigitNumber(pokemonModel.getID().toString())
 
@@ -48,6 +46,9 @@ class PokemonListAdapter(private var context: Context, private var data: Array<P
             type2.setColor(Helper.getColorForType(context, types[0]))
             type2.setVisibility(true)
         }
+
+        val picasso = Picasso.get()
+        picasso.load(pokemonModel.getImageURL()).into(imageView)
 
         return rowView
     }

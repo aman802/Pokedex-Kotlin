@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -41,7 +40,7 @@
         android:layout_below="@+id/activity_main_header_linear_layout"
         android:orientation="horizontal"
         android:padding="10dp"
-        android:background="@drawable/backgroud_search_elevated">
+        android:background="@drawable/background_search_elevated">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -62,44 +61,172 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="People also search"
-        android:layout_marginTop="20dp"
-        android:fontFamily="sans-serif-medium"
-        android:textColor="@android:color/black"
-        android:visibility="gone"/>
-
-    <GridView
-        android:id="@+id/activity_main_popular_search_grid_view"
+    <LinearLayout
+        android:id="@+id/activity_main_popular_search_linear_layout"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/activity_main_search_linear_layout"
         android:layout_marginTop="10dp"
-        android:numColumns="4"
-        tools:listitem="@layout/item_tag"
-        android:verticalSpacing="10dp"
-        android:gravity="center"
-        android:visibility="gone"/>
+        android:padding="10dp"
+        android:background="@drawable/background_search_elevated">
 
-    <ListView
-        android:id="@+id/activity_main_pokemon_list_view"
+        <LinearLayout
+            android:id="@+id/activity_main_popular_search_header_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/activity_main_popular_search_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-medium"
+                android:text="Popular Searches"
+                android:textColor="@android:color/black"
+                android:visibility="visible"
+                android:textSize="15sp"
+                android:layout_gravity="center"/>
+
+            <ImageView
+                android:id="@+id/activity_main_popular_search_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_cross"
+                android:padding="5dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/activity_main_popular_search_tags_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
+
+                <include
+                    android:id="@+id/search_tag_1"
+                    layout="@layout/item_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/search_tag_2"
+                    layout="@layout/item_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
+
+                <include
+                    android:id="@+id/search_tag_3"
+                    layout="@layout/item_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/search_tag_4"
+                    layout="@layout/item_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
+
+                <include
+                    android:id="@+id/search_tag_5"
+                    layout="@layout/item_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/search_tag_6"
+                    layout="@layout/item_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
+
+                <include
+                    android:id="@+id/search_tag_7"
+                    layout="@layout/item_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/search_tag_8"
+                    layout="@layout/item_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/activity_main_search_linear_layout"
-        android:divider="@android:color/transparent"
-        android:overScrollMode="never"
-        android:layout_marginTop="10dp"
-        android:dividerHeight="10dp"
-        tools:listitem="@layout/item_pokemon_list_view"
-        android:scrollbars="none"
-        android:layout_marginBottom="16dp"/>
+        android:layout_below="@+id/activity_main_popular_search_linear_layout">
 
-    <ProgressBar
-        android:id="@+id/activity_main_progress_bar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_centerInParent="true"
-        android:visibility="gone"/>
+        <ListView
+            android:id="@+id/activity_main_pokemon_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:clipToPadding="false"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10dp"
+            android:overScrollMode="never"
+            android:paddingBottom="16dp"
+            android:scrollbars="none"
+            tools:listitem="@layout/item_pokemon_list_view" />
+
+        <ProgressBar
+            android:id="@+id/activity_main_progress_bar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+
+    </RelativeLayout>
 
 </RelativeLayout>
