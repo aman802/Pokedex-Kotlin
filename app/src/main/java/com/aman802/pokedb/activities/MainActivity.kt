@@ -14,6 +14,7 @@ import com.aman802.pokedb.models.PokemonModel
 import com.aman802.pokedb.network.VolleyService
 import com.android.volley.Request
 import com.android.volley.VolleyError
+import org.json.JSONArray
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private val pokemonCount = 151
     private lateinit var progressBar: ProgressBar
     private lateinit var searchEditText: EditText
+    private lateinit var clearSearchImageView: ImageView
     private lateinit var popularSearchHeader: LinearLayout
     private lateinit var popularSearchImageView: ImageView
     private lateinit var popularSearchTagsLinearLayout: LinearLayout
@@ -35,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var searchTag8: tagView
     private lateinit var pokemonListView: ListView
     private lateinit var adapter: PokemonListAdapter
+    private val pokemonArray = Array(pokemonCount) { PokemonModel(null) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +45,7 @@ class MainActivity : AppCompatActivity() {
 
         progressBar = findViewById(R.id.activity_main_progress_bar)
         searchEditText = findViewById(R.id.activity_main_search_edit_text)
+        clearSearchImageView = findViewById(R.id.activity_main_clear_search_image_view)
         popularSearchTagsLinearLayout = findViewById(R.id.activity_main_popular_search_tags_linear_layout)
         popularSearchHeader = findViewById(R.id.activity_main_popular_search_header_linear_layout)
         popularSearchImageView = findViewById(R.id.activity_main_popular_search_image_view)
@@ -57,6 +61,7 @@ class MainActivity : AppCompatActivity() {
 
         progressBar.visibility = View.VISIBLE
         pokemonListView.visibility = View.GONE
+        searchEditText.isEnabled = false
 
         searchTag1.setText("Pikachu")
         searchTag2.setText("Charizard")
@@ -74,9 +79,20 @@ class MainActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 adapter.filter.filter(s.toString())
+                if (s.isNullOrEmpty()) {
+                    clearSearchImageView.visibility = View.GONE
+                }
+                else {
+                    clearSearchImageView.visibility = View.VISIBLE
+                }
             }
 
         })
+
+        clearSearchImageView.setOnClickListener {
+            searchEditText.setText("")
+            clearSearchImageView.visibility = View.GONE
+        }
 
         popularSearchHeader.setOnClickListener {
             when(popularSearchTagsLinearLayout.visibility) {
@@ -102,42 +118,29 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        fetchPokemonList()
+        localAPIFetch()
     }
 
-    private fun fetchPokemonList() {
-        val pokemonArray = Array(pokemonCount) { PokemonModel(null) }
-        for (i in 0 until pokemonCount) {
-            val id = i+1
-            val url = "https://pokeapi.co/api/v2/pokemon/$id/"
-            VolleyService.makeVolleyRequest(this@MainActivity, url, Request.Method.GET, null, tag,
-                object : VolleyService.VolleyInterface {
-                    override fun onSuccess(response: JSONObject) {
-                        pokemonArray[i] = PokemonModel(response)
-                        if (allDataFetched(pokemonArray)) {
-                            adapter = PokemonListAdapter(this@MainActivity, pokemonArray)
-                            pokemonListView.adapter = adapter
-                            progressBar.visibility = View.GONE
-                            pokemonListView.visibility = View.VISIBLE
-                        }
+    private fun localAPIFetch() {
+        val url = "http://242446ce.ngrok.io/api/v1/pokemon/"
+        VolleyService.makeJSONArrayRequest(this@MainActivity, url, Request.Method.GET, null, tag,
+            object : VolleyService.JSONArrayInterface {
+                override fun onJSONArraySuccess(response: JSONArray) {
+                    for (i in 0 until response.length()) {
+                        pokemonArray[i] = PokemonModel(response[i] as JSONObject?)
                     }
+                    adapter = PokemonListAdapter(this@MainActivity, pokemonArray)
+                    pokemonListView.adapter = adapter
+                    progressBar.visibility = View.GONE
+                    pokemonListView.visibility = View.VISIBLE
+                    searchEditText.isEnabled = true
+                }
 
-                    override fun onError(error: VolleyError) {
-                        VolleyService.handleVolleyError(error, true, this@MainActivity)
-                    }
-                })
-        }
-    }
+                override fun onError(error: VolleyError) {
+                    progressBar.visibility = View.GONE
+                    VolleyService.handleVolleyError(error, true, this@MainActivity)
+                }
 
-    private fun allDataFetched(pokemonArray: Array<PokemonModel>): Boolean {
-        var result = true
-        for (i in 0 until pokemonCount) {
-            if (pokemonArray[i].getID() == -1){
-                result = false
-                break
-            }
-        }
-
-        return result
+            })
     }
 }

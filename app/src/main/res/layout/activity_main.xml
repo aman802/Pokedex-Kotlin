@@ -49,8 +49,9 @@
 
         <EditText
             android:id="@+id/activity_main_search_edit_text"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:layout_marginStart="10dp"
             android:hint="Search for Pokémon or their moves"
             android:textColorHint="#80000000"
@@ -58,6 +59,14 @@
             android:textSize="15sp"
             android:fontFamily="sans-serif"
             android:background="@android:color/transparent"/>
+
+        <ImageView
+            android:id="@+id/activity_main_clear_search_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_cross"
+            android:layout_marginStart="5dp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

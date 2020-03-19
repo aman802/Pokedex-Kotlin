@@ -33,18 +33,17 @@ class PokemonListAdapter(private var context: Context, private var data: Array<P
         nameTextView.text = Helper.getCamelCaseName(pokemonModel.getName())
         numberTextView.text = Helper.getThreeDigitNumber(pokemonModel.getID().toString())
 
-        val types = pokemonModel.getTypes()
-        if (types.size == 1) {
-            type1.setText(Helper.getCamelCaseName(types[0]))
-            type1.setColor(Helper.getColorForType(context, types[0]))
-            type2.setVisibility(false)
+        type1.setText(Helper.getCamelCaseName(pokemonModel.getType1()))
+        type1.setColor(Helper.getColorForType(context, pokemonModel.getType1()))
+
+        val type2String = pokemonModel.getType2()
+        if (type2String != null) {
+            type2.setVisibility(true)
+            type2.setText(Helper.getCamelCaseName(type2String))
+            type2.setColor(Helper.getColorForType(context, type2String))
         }
         else {
-            type1.setText(Helper.getCamelCaseName(types[1]))
-            type1.setColor(Helper.getColorForType(context, types[1]))
-            type2.setText(Helper.getCamelCaseName(types[0]))
-            type2.setColor(Helper.getColorForType(context, types[0]))
-            type2.setVisibility(true)
+            type2.setVisibility(false)
         }
 
         val picasso = Picasso.get()
