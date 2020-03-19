@@ -12,11 +12,8 @@
 
     <ImageView
         android:id="@+id/item_pokemon_list_image_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:adjustViewBounds="true"
-        android:src="@drawable/bulbasaur"/>
+        android:layout_width="64dp"
+        android:layout_height="64dp" />
 
     <LinearLayout
         android:layout_width="0dp"

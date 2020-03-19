@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.*
+import com.aman802.pokedb.Constants
 import com.aman802.pokedb.R
 import com.aman802.pokedb.adapters.PokemonListAdapter
 import com.aman802.pokedb.customViews.tagView
@@ -122,7 +123,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun localAPIFetch() {
-        val url = "http://242446ce.ngrok.io/api/v1/pokemon/"
+        val url = Constants.apiPath + "/api/v1/pokemon/"
         VolleyService.makeJSONArrayRequest(this@MainActivity, url, Request.Method.GET, null, tag,
             object : VolleyService.JSONArrayInterface {
                 override fun onJSONArraySuccess(response: JSONArray) {

@@ -1,15 +1,18 @@
 package com.aman802.pokedb.adapters
 
+import android.app.Activity
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.aman802.pokedb.Constants
 import com.aman802.pokedb.Helper
 import com.aman802.pokedb.R
 import com.aman802.pokedb.customViews.tagView
 import com.aman802.pokedb.models.PokemonModel
-import com.squareup.picasso.Picasso
+import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -46,8 +49,8 @@ class PokemonListAdapter(private var context: Context, private var data: Array<P
             type2.setVisibility(false)
         }
 
-        val picasso = Picasso.get()
-        picasso.load(pokemonModel.getImageURL()).into(imageView)
+        val uriString = Constants.apiPath + "/static/pokeapi/images/" + pokemonModel.getID() + ".svg/"
+        GlideToVectorYou.justLoadImage(context as Activity, Uri.parse(uriString), imageView)
 
         return rowView
     }
