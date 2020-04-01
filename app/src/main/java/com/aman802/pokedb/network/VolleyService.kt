@@ -8,6 +8,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.concurrent.TimeUnit
 
 object VolleyService {
 
@@ -54,6 +55,7 @@ object VolleyService {
             })
 
         jsonArrayRequest.tag = TAG
+        jsonArrayRequest.retryPolicy = DefaultRetryPolicy(TimeUnit.SECONDS.toMillis(10).toInt(), 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
         requestQueue?.add(jsonArrayRequest)
     }
 

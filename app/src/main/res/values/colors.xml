@@ -8,24 +8,43 @@
 
     <color name="pokeballRed">#FF6B6B</color>
     <color name="tagBgColor">#B7D8FF</color>
+    <color name="tagBgColorTransparent">#8CB7D8FF</color>
     <color name="tagTextColor">#3982D8</color>
 
     <color name="grassType">#55CF5A</color>
+    <color name="grassTypeTransparent">#8C55CF5A</color>
     <color name="poisonType">#8C4EDC</color>
+    <color name="poisonTypeTransparent">#8C8C4EDC</color>
     <color name="bugType">#A1CE7D</color>
+    <color name="bugTypeTransparent">#8CA1CE7D</color>
     <color name="darkType">#000000</color>
+    <color name="darkTypeTransparent">#8C000000</color>
     <color name="dragonType">#5A58A6</color>
+    <color name="dragonTypeTransparent">#8C5A58A6</color>
     <color name="iceType">#5AF0E7</color>
+    <color name="iceTypeTransparent">#8C5AF0E7</color>
     <color name="electricType">#EFE05D</color>
+    <color name="electricTypeTransparent">#8CEFE05D</color>
     <color name="normalType">#D6A017</color>
+    <color name="normalTypeTransparent">#8CD6A017</color>
     <color name="fairyType">#FD96FF</color>
+    <color name="fairyTypeTransparent">#8CFD96FF</color>
     <color name="fightingType">#CF5555</color>
+    <color name="fightingTypeTransparent">#8CCF5555</color>
     <color name="psychicType">#EA53ED</color>
+    <color name="psychicTypeTransparent">#8CEA53ED</color>
     <color name="fireType">#FF7A00</color>
+    <color name="fireTypeTransparent">#8CFF7A00</color>
     <color name="rockType">#D1B85C</color>
+    <color name="rockTypeTransparent">#8CD1B85C</color>
     <color name="flyingType">#84A1EC</color>
+    <color name="flyingTypeTransparent">#8C84A1EC</color>
     <color name="steelType">#A5A5A5</color>
+    <color name="steelTypeTransparent">#8CA5A5A5</color>
     <color name="ghostType">#A68BDF</color>
+    <color name="ghostTypeTransparent">#8CA68BDF</color>
     <color name="waterType">#3941F1</color>
+    <color name="waterTypeTransparent">#8C3941F1</color>
     <color name="groundType">#CFCA55</color>
+    <color name="groundTypeTransparent">#8CCFCA55</color>
 </resources>

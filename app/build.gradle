@@ -5,26 +5,62 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file("poke-db-debug-keystore.keystore")
+            storePassword "pokedb"
+            keyAlias "poke-db-alias"
+            keyPassword "pokedb"
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.aman802.pokedb"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        release {
+        debugLocal {
+            buildConfigField 'String', 'API_PATH', '"http://10.0.2.2:8000"'
             minifyEnabled false
+            debuggable true
+            applicationIdSuffix '.debug.local'
+            resValue "string", "app_name", "PokeDB-Local"
+            manifestPlaceholders = [
+                    appIcon : "@mipmap/ic_launcher_debug",
+                    roundIcon : "@mipmap/ic_launcher_debug_round"
+            ]
+            signingConfig signingConfigs.debug
+        }
+        debugDev {
+            buildConfigField 'String', 'API_PATH', '"http://e5688b93.ngrok.io"'
+            minifyEnabled false
+            debuggable true
+            applicationIdSuffix '.debug.dev'
+            resValue "string", "app_name", "PokeDB-Dev"
+            manifestPlaceholders = [
+                    appIcon : "@mipmap/ic_launcher_debug",
+                    roundIcon : "@mipmap/ic_launcher_debug_round"
+            ]
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [
+                    appIcon : "@mipmap/ic_launche",
+                    roundIcon : "@mipmap/ic_launcher_round"
+            ]
         }
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

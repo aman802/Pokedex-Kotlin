@@ -2,14 +2,19 @@ package com.aman802.pokedb.adapters
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.content.ContextCompat
 import com.aman802.pokedb.Constants
 import com.aman802.pokedb.Helper
 import com.aman802.pokedb.R
+import com.aman802.pokedb.SharedPref
+import com.aman802.pokedb.activities.DedicatedActivity
 import com.aman802.pokedb.customViews.tagView
 import com.aman802.pokedb.models.PokemonModel
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
@@ -40,7 +45,7 @@ class PokemonListAdapter(private var context: Context, private var data: Array<P
         type1.setColor(Helper.getColorForType(context, pokemonModel.getType1()))
 
         val type2String = pokemonModel.getType2()
-        if (type2String != null) {
+        if (!type2String.isNullOrEmpty()) {
             type2.setVisibility(true)
             type2.setText(Helper.getCamelCaseName(type2String))
             type2.setColor(Helper.getColorForType(context, type2String))
@@ -51,6 +56,12 @@ class PokemonListAdapter(private var context: Context, private var data: Array<P
 
         val uriString = Constants.apiPath + "/static/pokeapi/images/" + pokemonModel.getID() + ".svg/"
         GlideToVectorYou.justLoadImage(context as Activity, Uri.parse(uriString), imageView)
+
+        rowView.setOnClickListener {
+            val intent = Intent(context, DedicatedActivity::class.java)
+            intent.putExtra("Pokemon", pokemonModel)
+            context.startActivity(intent)
+        }
 
         return rowView
     }

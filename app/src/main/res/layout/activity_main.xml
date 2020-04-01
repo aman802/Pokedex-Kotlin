@@ -20,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="PokeDB"
+            android:text="PokéDB"
             android:fontFamily="@font/reem_kufi"
             android:textColor="@android:color/black"
             android:textSize="40sp" />
@@ -78,7 +78,8 @@
         android:layout_below="@+id/activity_main_search_linear_layout"
         android:layout_marginTop="10dp"
         android:padding="10dp"
-        android:background="@drawable/background_search_elevated">
+        android:background="@drawable/background_search_elevated"
+        android:animateLayoutChanges="true">
 
         <LinearLayout
             android:id="@+id/activity_main_popular_search_header_linear_layout"

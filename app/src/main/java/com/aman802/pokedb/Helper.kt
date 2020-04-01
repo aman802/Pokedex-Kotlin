@@ -60,4 +60,134 @@ object Helper {
             else -> return ContextCompat.getColor(context, R.color.tagBgColor)
         }
     }
+
+    @JvmStatic
+    fun getBackgroundColorForType(context: Context, type: String): Int {
+        when (type.toLowerCase()) {
+            "grass" -> return ContextCompat.getColor(context, R.color.grassTypeTransparent)
+            "poison" -> return ContextCompat.getColor(context, R.color.poisonTypeTransparent)
+            "bug" -> return ContextCompat.getColor(context, R.color.bugTypeTransparent)
+            "dark" -> return ContextCompat.getColor(context, R.color.darkTypeTransparent)
+            "dragon" -> return ContextCompat.getColor(context, R.color.dragonTypeTransparent)
+            "ice" -> return ContextCompat.getColor(context, R.color.iceTypeTransparent)
+            "electric"-> return ContextCompat.getColor(context, R.color.electricTypeTransparent)
+            "normal" -> return ContextCompat.getColor(context, R.color.normalTypeTransparent)
+            "fairy" -> return ContextCompat.getColor(context, R.color.fairyTypeTransparent)
+            "fighting" -> return ContextCompat.getColor(context, R.color.fightingTypeTransparent)
+            "psychic" -> return ContextCompat.getColor(context, R.color.psychicTypeTransparent)
+            "fire" -> return ContextCompat.getColor(context, R.color.fireTypeTransparent)
+            "rock" -> return ContextCompat.getColor(context, R.color.rockTypeTransparent)
+            "flying" -> return ContextCompat.getColor(context, R.color.flyingTypeTransparent)
+            "steel" -> return ContextCompat.getColor(context, R.color.steelTypeTransparent)
+            "ghost" -> return ContextCompat.getColor(context, R.color.ghostTypeTransparent)
+            "water" -> return ContextCompat.getColor(context, R.color.waterTypeTransparent)
+            "ground" -> return ContextCompat.getColor(context, R.color.groundTypeTransparent)
+            else -> return ContextCompat.getColor(context, R.color.tagBgColorTransparent)
+        }
+    }
+
+    @JvmStatic
+    fun getWeaknessesForType(type1: String, type2: String?): ArrayList<String> {
+        val weaknessList = ArrayList<String>()
+        if (type2 == null) {
+            when (type1.toLowerCase()) {
+                "normal" -> {
+                    weaknessList.add("fighting")
+                }
+                "fire" -> {
+                    weaknessList.add("water")
+                    weaknessList.add("ground")
+                    weaknessList.add("rock")
+                }
+                "water" -> {
+                    weaknessList.add("electric")
+                    weaknessList.add("grass")
+                }
+                "electric" -> {
+                    weaknessList.add("ground")
+                }
+                "grass" -> {
+                    weaknessList.add("fire")
+                    weaknessList.add("ice")
+                    weaknessList.add("poison")
+                    weaknessList.add("flying")
+                }
+                "ice" -> {
+                    weaknessList.add("fire")
+                    weaknessList.add("fighting")
+                    weaknessList.add("rock")
+                    weaknessList.add("steel")
+                }
+                "fighting" -> {
+                    weaknessList.add("flying")
+                    weaknessList.add("psychic")
+                    weaknessList.add("fairy")
+                }
+                "poison" -> {
+                    weaknessList.add("ground")
+                    weaknessList.add("psychic")
+                }
+                "ground" -> {
+                    weaknessList.add("water")
+                    weaknessList.add("grass")
+                    weaknessList.add("ice")
+                }
+                "flying" -> {
+                    weaknessList.add("electric")
+                    weaknessList.add("ice")
+                    weaknessList.add("rock")
+                }
+                "psychic" -> {
+                    weaknessList.add("bug")
+                    weaknessList.add("ghost")
+                    weaknessList.add("dark")
+                }
+                "bug" -> {
+                    weaknessList.add("fire")
+                    weaknessList.add("flying")
+                    weaknessList.add("rock")
+                }
+                "rock" -> {
+                    weaknessList.add("water")
+                    weaknessList.add("grass")
+                    weaknessList.add("fighting")
+                    weaknessList.add("ground")
+                    weaknessList.add("steel")
+                }
+                "ghost" -> {
+                    weaknessList.add("ghost")
+                    weaknessList.add("dark")
+                }
+                "dragon" -> {
+                    weaknessList.add("ice")
+                    weaknessList.add("fairy")
+                    weaknessList.add("dragon")
+                }
+                "dark" -> {
+                    weaknessList.add("fighting")
+                    weaknessList.add("bug")
+                    weaknessList.add("fairy")
+                }
+                "steel" -> {
+                    weaknessList.add("fire")
+                    weaknessList.add("fighting")
+                    weaknessList.add("ground")
+                }
+                "fairy" -> {
+                    weaknessList.add("poison")
+                    weaknessList.add("steel")
+                }
+            }
+
+//            return weaknessList
+        }
+//        else {
+//            return getWeaknessesForDualType(type1, type2)
+//        }
+        return weaknessList
+    }
+
+//    private fun getWeaknessesForDualType(type1: String, type2: String): ArrayList<String> {
+//
+//    }
 }

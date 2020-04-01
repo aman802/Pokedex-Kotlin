@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.*
 import com.aman802.pokedb.Constants
 import com.aman802.pokedb.R
+import com.aman802.pokedb.SharedPref
 import com.aman802.pokedb.adapters.PokemonListAdapter
 import com.aman802.pokedb.customViews.tagView
 import com.aman802.pokedb.models.PokemonModel
@@ -59,6 +60,9 @@ class MainActivity : AppCompatActivity() {
         searchTag7 = tagView(findViewById(R.id.search_tag_7))
         searchTag8 = tagView(findViewById(R.id.search_tag_8))
         pokemonListView = findViewById(R.id.activity_main_pokemon_list_view)
+
+        adapter = PokemonListAdapter(this@MainActivity, pokemonArray)
+        pokemonListView.adapter = adapter
 
         progressBar.visibility = View.VISIBLE
         pokemonListView.visibility = View.GONE
@@ -123,15 +127,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun localAPIFetch() {
+        val favoritesList = SharedPref.getFavoritesList(this)
         val url = Constants.apiPath + "/api/v1/pokemon/"
         VolleyService.makeJSONArrayRequest(this@MainActivity, url, Request.Method.GET, null, tag,
             object : VolleyService.JSONArrayInterface {
                 override fun onJSONArraySuccess(response: JSONArray) {
                     for (i in 0 until response.length()) {
                         pokemonArray[i] = PokemonModel(response[i] as JSONObject?)
+                        if (!favoritesList.isNullOrEmpty() && favoritesList.contains(pokemonArray[i].getID())) {
+                            pokemonArray[i].setFavorite(true)
+                        }
                     }
-                    adapter = PokemonListAdapter(this@MainActivity, pokemonArray)
-                    pokemonListView.adapter = adapter
                     progressBar.visibility = View.GONE
                     pokemonListView.visibility = View.VISIBLE
                     searchEditText.isEnabled = true
