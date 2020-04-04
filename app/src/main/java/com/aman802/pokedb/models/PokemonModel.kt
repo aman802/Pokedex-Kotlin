@@ -15,6 +15,10 @@ class PokemonModel(response: JSONObject?) : Serializable {
     private var evolution1Name: String = ""
     private var evolutionID2: Int = -1
     private var evolution2Name: String = ""
+    private var hp: Int = 0
+    private var attack: Int = 0
+    private var defense: Int = 0
+    private var speed: Int = 0
     private var isFavorite: Boolean = false
 
     init {
@@ -34,6 +38,10 @@ class PokemonModel(response: JSONObject?) : Serializable {
                 evolutionID2 = response.getInt("evolutionID2")
                 evolution2Name = response.getString("evolution2Name")
             }
+            hp = response.getInt("hp")
+            attack = response.getInt("attack")
+            defense = response.getInt("defense")
+            speed = response.getInt("speed")
         }
     }
 
@@ -43,10 +51,6 @@ class PokemonModel(response: JSONObject?) : Serializable {
 
     fun getName(): String {
         return name
-    }
-
-    fun getImageURL(): String {
-        return imageURL
     }
 
     fun getType1(): String {
@@ -75,6 +79,22 @@ class PokemonModel(response: JSONObject?) : Serializable {
 
     fun getEvolution2Name(): String {
         return evolution2Name
+    }
+
+    fun getHp(): Int {
+        return hp
+    }
+
+    fun getAttack(): Int {
+        return attack
+    }
+
+    fun getDefense(): Int {
+        return defense
+    }
+
+    fun getSpeed(): Int {
+        return speed
     }
 
     fun isFavorite(): Boolean {

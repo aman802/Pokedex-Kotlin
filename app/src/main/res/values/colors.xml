@@ -5,6 +5,14 @@
     <color name="colorAccent">#FF6B6B</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="lowestStat">#FF0404</color>
+    <color name="lowestStatTransparent">#40FF0404</color>
+    <color name="lowStat">#FF8C04</color>
+    <color name="lowStatTransparent">#40FF8C04</color>
+    <color name="midStat">#FFDB5B</color>
+    <color name="midStatTransparent">#40FFDB5B</color>
+    <color name="highStat">#70FF00</color>
+    <color name="highStatTransparent">#4070FF00</color>
 
     <color name="pokeballRed">#FF6B6B</color>
     <color name="tagBgColor">#B7D8FF</color>

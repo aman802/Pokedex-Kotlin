@@ -3,8 +3,17 @@ package com.aman802.pokedb
 import android.content.Context
 import androidx.core.content.ContextCompat
 import java.lang.StringBuilder
+import kotlin.math.max
+import kotlin.math.roundToInt
 
 object Helper {
+
+    @JvmStatic
+    fun convertToDP(context: Context, sizeInDP: Int): Int {
+        val scale = context.resources.displayMetrics.density
+        return ((sizeInDP*scale + 0.5f).toInt());
+    }
+
     @JvmStatic
     fun getCamelCaseName(name: String): String {
         val stringBuilder = StringBuilder()
@@ -83,6 +92,38 @@ object Helper {
             "water" -> return ContextCompat.getColor(context, R.color.waterTypeTransparent)
             "ground" -> return ContextCompat.getColor(context, R.color.groundTypeTransparent)
             else -> return ContextCompat.getColor(context, R.color.tagBgColorTransparent)
+        }
+    }
+
+    @JvmStatic
+    fun getPercentForStat(statValue: Int, statName: String): Int {
+        val maxValue = getMaxValueForStat(statName)
+        if (maxValue == -1)
+            return -1
+
+        val division= (statValue.toFloat() / maxValue)
+        return (division * 100).roundToInt()
+    }
+
+    @JvmStatic
+    fun getMaxValueForStat(statName: String): Int {
+        return when {
+            "hp".equals(statName, true) -> 250
+            "attack".equals(statName, true) -> 134
+            "defense".equals(statName, true) -> 180
+            "speed".equals(statName, true) -> 140
+            else -> -1
+        }
+    }
+
+    @JvmStatic
+    fun getMinValueForStat(statName: String): Int {
+        return when {
+            "hp".equals(statName, true) -> 10
+            "attack".equals(statName, true) -> 5
+            "defense".equals(statName, true) -> 5
+            "speed".equals(statName, true) -> 15
+            else -> -1
         }
     }
 

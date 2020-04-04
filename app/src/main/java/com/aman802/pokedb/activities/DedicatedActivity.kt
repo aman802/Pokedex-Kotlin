@@ -1,14 +1,14 @@
 package com.aman802.pokedb.activities
 
+import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.transition.TransitionManager
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.TranslateAnimation
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
@@ -16,6 +16,7 @@ import com.aman802.pokedb.Constants
 import com.aman802.pokedb.Helper
 import com.aman802.pokedb.R
 import com.aman802.pokedb.SharedPref
+import com.aman802.pokedb.customViews.LockableScrollView
 import com.aman802.pokedb.customViews.tagView
 import com.aman802.pokedb.models.PokemonModel
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
@@ -33,6 +34,7 @@ class DedicatedActivity : AppCompatActivity() {
     private lateinit var upperRelativeLayout: RelativeLayout
     private lateinit var pokeballImageView: ImageView
     private lateinit var lowerRelativeLayout: RelativeLayout
+    private lateinit var contentScrollView: LockableScrollView
     private lateinit var contentLinearLayout: LinearLayout
     private lateinit var nameTextView: TextView
     private lateinit var type1: tagView
@@ -59,6 +61,14 @@ class DedicatedActivity : AppCompatActivity() {
     private lateinit var evolution3ImageView: ImageView
     private lateinit var evolution3TextView: TextView
     private lateinit var noEvolutionsTextView: TextView
+    private lateinit var hpTextView: TextView
+    private lateinit var defenseTextView: TextView
+    private lateinit var attackTextView: TextView
+    private lateinit var speedTextView: TextView
+    private lateinit var hpProgressBar: ProgressBar
+    private lateinit var defenseProgressBar: ProgressBar
+    private lateinit var attackProgressBar: ProgressBar
+    private lateinit var speedProgressBar: ProgressBar
     private lateinit var seeMoreLinearLayout: LinearLayout
 
 
@@ -80,6 +90,7 @@ class DedicatedActivity : AppCompatActivity() {
         upperRelativeLayout = findViewById(R.id.activity_dedicated_upper_relative_layout)
         pokeballImageView = findViewById(R.id.activity_dedicated_pokeball_background)
         lowerRelativeLayout = findViewById(R.id.activity_dedicated_lower_relative_layout)
+        contentScrollView = findViewById(R.id.activity_dedicated_content_scroll_view)
         contentLinearLayout = findViewById(R.id.activity_dedicated_content_linear_layout)
         nameTextView = findViewById(R.id.activity_dedicated_name_text_view)
         type1 = tagView(findViewById(R.id.activity_dedicated_type1))
@@ -106,6 +117,14 @@ class DedicatedActivity : AppCompatActivity() {
         evolution3ImageView = findViewById(R.id.activity_dedicated_evolution_3_image_view)
         evolution3TextView = findViewById(R.id.activity_dedicated_evolution_3_text_view)
         noEvolutionsTextView = findViewById(R.id.activity_dedicated_no_evolutions_text_view)
+        hpTextView = findViewById(R.id.activity_dedicated_hp_text_view)
+        defenseTextView = findViewById(R.id.activity_dedicated_defense_text_view)
+        attackTextView = findViewById(R.id.activity_dedicated_attack_text_view)
+        speedTextView = findViewById(R.id.activity_dedicated_speed_text_view)
+        hpProgressBar = findViewById(R.id.activity_dedicated_hp_progress_bar)
+        defenseProgressBar = findViewById(R.id.activity_dedicated_defense_progress_bar)
+        attackProgressBar = findViewById(R.id.activity_dedicated_attack_progress_bar)
+        speedProgressBar = findViewById(R.id.activity_dedicated_speed_progress_bar)
         seeMoreLinearLayout = findViewById(R.id.activity_dedicated_see_more_linear_layout)
 
         backImageView.setOnClickListener {
@@ -128,9 +147,10 @@ class DedicatedActivity : AppCompatActivity() {
                 Toast.makeText(this, "Removed from favorites", Toast.LENGTH_SHORT).show()
             }
         }
+        contentScrollView.setScrollable(false)
 
         seeMoreLinearLayout.setOnClickListener {
-            set = animateLayout(set)
+            animateLayout()
         }
 
         val backgroundColor = Helper.getBackgroundColorForType(this, pokemonModel.getType1())
@@ -153,8 +173,8 @@ class DedicatedActivity : AppCompatActivity() {
 
         val pokemonName = pokemonModel.getName() + " " + Helper.getThreeDigitNumber(pokemonModel.getID().toString())
 
-        nameTextView.text = pokemonName
-        headerNameTextView.text = pokemonName
+        nameTextView.text = Helper.getCamelCaseName(pokemonName)
+        headerNameTextView.text = Helper.getCamelCaseName(pokemonName)
 
         type1.setText(Helper.getCamelCaseName(pokemonModel.getType1()))
         type1.setColor(Helper.getColorForType(this ,pokemonModel.getType1()))
@@ -182,7 +202,7 @@ class DedicatedActivity : AppCompatActivity() {
         if (evolutionID1 == -1 && evolutionID2 == -1) {
             evolutionsRelativeLayout.visibility = View.GONE
             noEvolutionsTextView.visibility = View.VISIBLE
-            if (pokemonModel.getName().toLowerCase() == "eevee") {
+            if (pokemonID in 133..136) {
                 noEvolutionsTextView.text = "Eevee Evolution chart is difficult to prepare"
             }
         }
@@ -256,12 +276,28 @@ class DedicatedActivity : AppCompatActivity() {
                     evolution2TextView.text = Helper.getCamelCaseName(evolution2Name) + '\n' + Helper.getThreeDigitNumber(evolutionID2.toString())
                     evolution3TextView.text = Helper.getCamelCaseName(pokemonModel.getName()) + '\n' + Helper.getThreeDigitNumber(pokemonID.toString())
                 }
-
             }
         }
+
+        val hp = pokemonModel.getHp()
+        val attack = pokemonModel.getAttack()
+        val defense = pokemonModel.getDefense()
+        val speed = pokemonModel.getSpeed()
+
+        hpTextView.text = hp.toString()
+        attackTextView.text = attack.toString()
+        defenseTextView.text = defense.toString()
+        speedTextView.text = speed.toString()
+
+        setProgressBarData(hpProgressBar, Helper.getPercentForStat(hp, "hp"))
+        setProgressBarData(attackProgressBar, Helper.getPercentForStat(attack, "attack"))
+        setProgressBarData(defenseProgressBar, Helper.getPercentForStat(defense, "defense"))
+        setProgressBarData(speedProgressBar, Helper.getPercentForStat(speed, "speed"))
+
+
     }
 
-    private fun animateLayout(set: Boolean): Boolean {
+    private fun animateLayout() {
         val constraint1 = ConstraintSet()
         constraint1.clone(superConstraintLayout)
         val constraint2 = ConstraintSet()
@@ -286,9 +322,37 @@ class DedicatedActivity : AppCompatActivity() {
         headerNameTextView.visibility = View.VISIBLE
 
         val layoutParams: RelativeLayout.LayoutParams = contentLinearLayout.layoutParams as RelativeLayout.LayoutParams
-        layoutParams.setMargins(16, 16, 16, 0)
+        val marginDP = Helper.convertToDP(this, 16)
+        layoutParams.setMargins(marginDP, 0, marginDP, 0)
         contentLinearLayout.layoutParams = layoutParams
+        contentLinearLayout.setPadding(0, marginDP, 0, marginDP)
 
-        return !set
+        // This enables scroll in expanded view
+        contentScrollView.setScrollable(true)
+    }
+
+    private fun setProgressBarData(progressBar: ProgressBar, percent: Int) {
+        when {
+            percent <= 25 -> {
+                progressBar.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.lowestStat))
+                progressBar.progressBackgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.lowestStatTransparent))
+            }
+
+            percent <= 50 -> {
+                progressBar.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.lowStat))
+                progressBar.progressBackgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.lowStatTransparent))
+            }
+
+            percent <= 75 -> {
+                progressBar.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.midStat))
+                progressBar.progressBackgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.midStatTransparent))
+            }
+
+            percent <= 100 -> {
+                progressBar.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.highStat))
+                progressBar.progressBackgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.highStatTransparent))
+            }
+        }
+        progressBar.progress = percent
     }
 }

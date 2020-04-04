@@ -94,15 +94,18 @@
                 android:textColor="@color/black"
                 android:fontFamily="sans-serif" />
 
-            <ScrollView
+            <com.aman802.pokedb.customViews.LockableScrollView
+                android:id="@+id/activity_dedicated_content_scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scrollbars="none">
+                android:scrollbars="none"
+                android:clipToPadding="false">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -442,9 +445,326 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                android:layout_weight="1"
+                                android:background="@color/black"
+                                android:layout_gravity="center"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Base Stats"
+                                android:textSize="17sp"
+                                android:textColor="@color/black"
+                                android:fontFamily="sans-serif"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginEnd="16dp"
+                                android:includeFontPadding="false"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                android:layout_weight="1"
+                                android:background="@color/black"
+                                android:layout_gravity="center"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="HP"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:layout_marginTop="16dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Defense"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:layout_marginTop="16dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Attack"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:layout_marginTop="16dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Speed"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:layout_marginTop="16dp"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginStart="10dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif"/>
+
+                                <TextView
+                                    android:id="@+id/activity_dedicated_hp_text_view"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="73"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:layout_marginTop="16dp"/>
+
+                                <TextView
+                                    android:id="@+id/activity_dedicated_defense_text_view"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="147"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:layout_marginTop="16dp"/>
+
+                                <TextView
+                                    android:id="@+id/activity_dedicated_attack_text_view"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="220"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:layout_marginTop="16dp"/>
+
+                                <TextView
+                                    android:id="@+id/activity_dedicated_speed_text_view"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="294"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:layout_marginTop="16dp"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:layout_marginStart="10dp">
+
+                                <ProgressBar
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    style="@android:style/Widget.ProgressBar.Horizontal"
+                                    android:progress="25"
+                                    android:progressBackgroundTint="@color/bugType"
+                                    android:progressTint="@color/colorPrimary"
+                                    android:visibility="invisible"/>
+
+                                <ProgressBar
+                                    android:id="@+id/activity_dedicated_hp_progress_bar"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    style="@android:style/Widget.ProgressBar.Horizontal"
+                                    android:progress="25"
+                                    android:layout_marginTop="16dp" />
+
+                                <ProgressBar
+                                    android:id="@+id/activity_dedicated_defense_progress_bar"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    style="@android:style/Widget.ProgressBar.Horizontal"
+                                    android:progress="50"
+                                    android:layout_marginTop="16dp" />
+
+                                <ProgressBar
+                                    android:id="@+id/activity_dedicated_attack_progress_bar"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    style="@android:style/Widget.ProgressBar.Horizontal"
+                                    android:progress="75"
+                                    android:layout_marginTop="16dp" />
+
+                                <ProgressBar
+                                    android:id="@+id/activity_dedicated_speed_progress_bar"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    style="@android:style/Widget.ProgressBar.Horizontal"
+                                    android:progress="100"
+                                    android:layout_marginTop="16dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginStart="10dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Min"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif-medium" />
+
+                                <TextView
+                                    android:id="@+id/activity_dedicated_hp_min_text_view"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="10"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:layout_marginTop="16dp"/>
+
+                                <TextView
+                                    android:id="@+id/activity_dedicated_defense_min_text_view"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="5"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:layout_marginTop="16dp"/>
+
+                                <TextView
+                                    android:id="@+id/activity_dedicated_attack_min_text_view"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="5"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:layout_marginTop="16dp"/>
+
+                                <TextView
+                                    android:id="@+id/activity_dedicated_speed_min_text_view"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="15"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:layout_marginTop="16dp"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginStart="10dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Max"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif-medium" />
+
+                                <TextView
+                                    android:id="@+id/activity_dedicated_hp_max_text_view"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="250"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:layout_marginTop="16dp"/>
+
+                                <TextView
+                                    android:id="@+id/activity_dedicated_defense_max_text_view"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="180"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:layout_marginTop="16dp"/>
+
+                                <TextView
+                                    android:id="@+id/activity_dedicated_attack_max_text_view"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="134"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:layout_marginTop="16dp"/>
+
+                                <TextView
+                                    android:id="@+id/activity_dedicated_speed_max_text_view"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="140"
+                                    android:textSize="15sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:layout_marginTop="16dp"/>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
-            </ScrollView>
+            </com.aman802.pokedb.customViews.LockableScrollView>
 
         </LinearLayout>
 
