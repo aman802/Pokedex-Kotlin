@@ -22,7 +22,7 @@ import org.json.JSONObject
 class MainActivity : AppCompatActivity() {
 
     private val tag: String = MainActivity::class.java.simpleName
-    private val pokemonCount = 151
+    private val pokemonCount = 807
     private lateinit var progressBar: ProgressBar
     private lateinit var searchEditText: EditText
     private lateinit var clearSearchImageView: ImageView

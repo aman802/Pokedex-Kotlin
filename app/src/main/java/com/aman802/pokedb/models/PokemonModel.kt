@@ -53,6 +53,10 @@ class PokemonModel(response: JSONObject?) : Serializable {
         return name
     }
 
+    fun getImageURL(): String {
+        return imageURL
+    }
+
     fun getType1(): String {
         return type1
     }

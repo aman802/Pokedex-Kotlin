@@ -63,30 +63,20 @@ object VolleyService {
 
         var toastMessage = ""
 
-        if (error is NetworkError) {
-            toastMessage = "Unstable Internet Connection! Please check your connection."
-        }
-
-        else if (error is TimeoutError) {
-            toastMessage = "Timeout Error"
-        }
-
-        else if (error is ServerError) {
-            toastMessage = getVolleyErrorMessage(error)
+        when (error) {
+            is NetworkError -> {
+                toastMessage = "Unstable Internet Connection! Please check your connection."
+            }
+            is TimeoutError -> {
+                toastMessage = "Timeout Error"
+            }
+            is ServerError -> {
+                toastMessage = "Server is down. Aman ko bol net chalu kare"
+            }
         }
 
         if (displayToast) {
             Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
         }
     }
-
-    private fun getVolleyErrorMessage(error: VolleyError): String {
-        val response: NetworkResponse? = error.networkResponse
-        if (response?.data != null) {
-            val jsonObject = JSONObject(String(response.data))
-            return jsonObject.getString("message")
-        }
-        return "NULL";
-    }
-
 }

@@ -12,18 +12,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
-import com.aman802.pokedb.Constants
 import com.aman802.pokedb.Helper
 import com.aman802.pokedb.R
 import com.aman802.pokedb.SharedPref
 import com.aman802.pokedb.customViews.LockableScrollView
 import com.aman802.pokedb.customViews.tagView
 import com.aman802.pokedb.models.PokemonModel
-import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
+import com.squareup.picasso.Picasso
 
 class DedicatedActivity : AppCompatActivity() {
 
-    private val uriBaseString = Constants.apiPath + "/static/pokeapi/images/"
+    private val uriBaseString = "https://veekun.com/dex/media/pokemon/sugimori/"
     private var set: Boolean = false
     private lateinit var pokemonModel: PokemonModel
     private lateinit var superConstraintLayout: ConstraintLayout
@@ -70,6 +69,7 @@ class DedicatedActivity : AppCompatActivity() {
     private lateinit var attackProgressBar: ProgressBar
     private lateinit var speedProgressBar: ProgressBar
     private lateinit var seeMoreLinearLayout: LinearLayout
+    private val picasso = Picasso.get()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -168,8 +168,8 @@ class DedicatedActivity : AppCompatActivity() {
             favoriteImageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_star_border))
         }
 
-        val uriString = uriBaseString + pokemonID + ".svg/"
-        GlideToVectorYou.justLoadImage(this, Uri.parse(uriString), pokemonImageView)
+        val uriString = uriBaseString + pokemonID + ".png"
+        picasso.load(Uri.parse(uriString)).into(pokemonImageView)
 
         val pokemonName = pokemonModel.getName() + " " + Helper.getThreeDigitNumber(pokemonModel.getID().toString())
 
@@ -217,20 +217,20 @@ class DedicatedActivity : AppCompatActivity() {
                 evolution3LinearLayout.visibility = View.GONE
 
                 val evolution1Name = pokemonModel.getEvolution1Name()
-                val uri2 = uriBaseString + evolutionID1 + ".svg"
+                val uri2 = uriBaseString + evolutionID1 + ".png"
 
                 // Case 2.1: When the current pokemon has an evolution
                 if (pokemonID < evolutionID1) {
-                    GlideToVectorYou.justLoadImage(this, Uri.parse(uriString), evolution1ImageView)
-                    GlideToVectorYou.justLoadImage(this, Uri.parse(uri2), evolution2ImageView)
+                    picasso.load(uriString).into(evolution1ImageView)
+                    picasso.load(uri2).into(evolution2ImageView)
                     evolution1TextView.text = Helper.getCamelCaseName(pokemonModel.getName()) + '\n' + Helper.getThreeDigitNumber(pokemonID.toString())
                     evolution2TextView.text = Helper.getCamelCaseName(evolution1Name) + '\n' + Helper.getThreeDigitNumber(evolutionID1.toString())
                 }
 
                 // Case 2.2: When the current pokemon is an evolution of some other pokemon
                 else {
-                    GlideToVectorYou.justLoadImage(this, Uri.parse(uri2), evolution1ImageView)
-                    GlideToVectorYou.justLoadImage(this, Uri.parse(uriString), evolution2ImageView)
+                    picasso.load(uri2).into(evolution1ImageView)
+                    picasso.load(uriString).into(evolution2ImageView)
                     evolution1TextView.text = Helper.getCamelCaseName(evolution1Name) + '\n' + Helper.getThreeDigitNumber(evolutionID1.toString())
                     evolution2TextView.text = Helper.getCamelCaseName(pokemonModel.getName()) + '\n' + Helper.getThreeDigitNumber(pokemonID.toString())
                 }
@@ -244,14 +244,14 @@ class DedicatedActivity : AppCompatActivity() {
 
                 val evolution1Name = pokemonModel.getEvolution1Name()
                 val evolution2Name = pokemonModel.getEvolution2Name()
-                val uri2 = uriBaseString + evolutionID1 + ".svg"
-                val uri3 = uriBaseString + evolutionID2 + ".svg"
+                val uri2 = uriBaseString + evolutionID1 + ".png"
+                val uri3 = uriBaseString + evolutionID2 + ".png"
 
                 // Case 3.1: When the current pokemon has 2 evolutions. It is guaranteed that evolutionID1 is always less than evolutionID2
                 if (pokemonID < evolutionID1) {
-                    GlideToVectorYou.justLoadImage(this, Uri.parse(uriString), evolution1ImageView)
-                    GlideToVectorYou.justLoadImage(this, Uri.parse(uri2), evolution2ImageView)
-                    GlideToVectorYou.justLoadImage(this, Uri.parse(uri3), evolution3ImageView)
+                    picasso.load(uriString).into(evolution1ImageView)
+                    picasso.load(uri2).into(evolution2ImageView)
+                    picasso.load(uri3).into(evolution3ImageView)
                     evolution1TextView.text = Helper.getCamelCaseName(pokemonModel.getName()) + '\n' + Helper.getThreeDigitNumber(pokemonID.toString())
                     evolution2TextView.text = Helper.getCamelCaseName(evolution1Name) + '\n' + Helper.getThreeDigitNumber(evolutionID1.toString())
                     evolution3TextView.text = Helper.getCamelCaseName(evolution2Name) + '\n' + Helper.getThreeDigitNumber(evolutionID2.toString())
@@ -259,9 +259,9 @@ class DedicatedActivity : AppCompatActivity() {
 
                 // Case 3.2: When the current pokemon has 1 evolution and evolved from some other pokemon (middle evolution)
                 else if (pokemonID < evolutionID2) {
-                    GlideToVectorYou.justLoadImage(this, Uri.parse(uri2), evolution1ImageView)
-                    GlideToVectorYou.justLoadImage(this, Uri.parse(uriString), evolution2ImageView)
-                    GlideToVectorYou.justLoadImage(this, Uri.parse(uri3), evolution3ImageView)
+                    picasso.load(uri2).into(evolution1ImageView)
+                    picasso.load(uriString).into(evolution2ImageView)
+                    picasso.load(uri3).into(evolution3ImageView)
                     evolution1TextView.text = Helper.getCamelCaseName(evolution1Name) + '\n' + Helper.getThreeDigitNumber(evolutionID1.toString())
                     evolution2TextView.text = Helper.getCamelCaseName(pokemonModel.getName()) + '\n' + Helper.getThreeDigitNumber(pokemonID.toString())
                     evolution3TextView.text = Helper.getCamelCaseName(evolution2Name) + '\n' + Helper.getThreeDigitNumber(evolutionID2.toString())
@@ -269,9 +269,9 @@ class DedicatedActivity : AppCompatActivity() {
 
                 // Case 3.3: When the current pokemon is the maximum evolution of the series
                 else {
-                    GlideToVectorYou.justLoadImage(this, Uri.parse(uri2), evolution1ImageView)
-                    GlideToVectorYou.justLoadImage(this, Uri.parse(uri3), evolution2ImageView)
-                    GlideToVectorYou.justLoadImage(this, Uri.parse(uriString), evolution3ImageView)
+                    picasso.load(uri2).into(evolution1ImageView)
+                    picasso.load(uri3).into(evolution2ImageView)
+                    picasso.load(uriString).into(evolution3ImageView)
                     evolution1TextView.text = Helper.getCamelCaseName(evolution1Name) + '\n' + Helper.getThreeDigitNumber(evolutionID1.toString())
                     evolution2TextView.text = Helper.getCamelCaseName(evolution2Name) + '\n' + Helper.getThreeDigitNumber(evolutionID2.toString())
                     evolution3TextView.text = Helper.getCamelCaseName(pokemonModel.getName()) + '\n' + Helper.getThreeDigitNumber(pokemonID.toString())
