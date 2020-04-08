@@ -1,12 +1,39 @@
 package com.aman802.pokedb
 
+import android.app.Activity
 import android.content.Context
+import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.core.content.ContextCompat
-import java.lang.StringBuilder
-import kotlin.math.max
 import kotlin.math.roundToInt
 
 object Helper {
+
+    //Set up touch listener for non-text box views to hide keyboard.
+    fun setupKeyboardHidingUI(view: View, activity: Activity) {
+        if (view !is EditText) {
+            view.setOnTouchListener { _, _ ->
+                hideSoftKeyboard(activity)
+                false
+            }
+        }
+        //If a layout container, iterate over children and seed recursion.
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                val innerView = view.getChildAt(i)
+                setupKeyboardHidingUI(innerView, activity)
+            }
+        }
+    }
+
+    private fun hideSoftKeyboard(activity: Activity) {
+        val inputMethodManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (inputMethodManager != null && activity.currentFocus != null) {
+            inputMethodManager.hideSoftInputFromWindow(activity.currentFocus.windowToken, 0)
+        }
+    }
 
     @JvmStatic
     fun convertToDP(context: Context, sizeInDP: Int): Int {

@@ -1,17 +1,18 @@
 package com.aman802.pokedb.activities
 
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.*
 import com.aman802.pokedb.Constants
+import com.aman802.pokedb.Helper
 import com.aman802.pokedb.R
 import com.aman802.pokedb.SharedPref
 import com.aman802.pokedb.adapters.PokemonListAdapter
-import com.aman802.pokedb.customViews.tagView
 import com.aman802.pokedb.models.PokemonModel
 import com.aman802.pokedb.network.VolleyService
 import com.android.volley.Request
@@ -19,63 +20,50 @@ import com.android.volley.VolleyError
 import org.json.JSONArray
 import org.json.JSONObject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), PokemonListAdapter.onDataChanged {
 
     private val tag: String = MainActivity::class.java.simpleName
-    private val pokemonCount = 807
+    private var currentPageNumber = 1
     private lateinit var progressBar: ProgressBar
+    private lateinit var headerPokeBallImageView: ImageView
     private lateinit var searchEditText: EditText
     private lateinit var clearSearchImageView: ImageView
-    private lateinit var popularSearchHeader: LinearLayout
-    private lateinit var popularSearchImageView: ImageView
-    private lateinit var popularSearchTagsLinearLayout: LinearLayout
-    private lateinit var searchTag1: tagView
-    private lateinit var searchTag2: tagView
-    private lateinit var searchTag3: tagView
-    private lateinit var searchTag4: tagView
-    private lateinit var searchTag5: tagView
-    private lateinit var searchTag6: tagView
-    private lateinit var searchTag7: tagView
-    private lateinit var searchTag8: tagView
     private lateinit var pokemonListView: ListView
+    private lateinit var noPokemonLinearLayout: LinearLayout
     private lateinit var adapter: PokemonListAdapter
-    private val pokemonArray = Array(pokemonCount) { PokemonModel(null) }
+    private val pokemonArrayList = ArrayList<PokemonModel>()
+    private var preLast = 0
+    private var nextUrl = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        Helper.setupKeyboardHidingUI(findViewById(android.R.id.content), this)
+
         progressBar = findViewById(R.id.activity_main_progress_bar)
+        headerPokeBallImageView = findViewById(R.id.activity_main_header_pokeball_image_view)
         searchEditText = findViewById(R.id.activity_main_search_edit_text)
         clearSearchImageView = findViewById(R.id.activity_main_clear_search_image_view)
-        popularSearchTagsLinearLayout = findViewById(R.id.activity_main_popular_search_tags_linear_layout)
-        popularSearchHeader = findViewById(R.id.activity_main_popular_search_header_linear_layout)
-        popularSearchImageView = findViewById(R.id.activity_main_popular_search_image_view)
-        searchTag1 = tagView(findViewById(R.id.search_tag_1))
-        searchTag2 = tagView(findViewById(R.id.search_tag_2))
-        searchTag3 = tagView(findViewById(R.id.search_tag_3))
-        searchTag4 = tagView(findViewById(R.id.search_tag_4))
-        searchTag5 = tagView(findViewById(R.id.search_tag_5))
-        searchTag6 = tagView(findViewById(R.id.search_tag_6))
-        searchTag7 = tagView(findViewById(R.id.search_tag_7))
-        searchTag8 = tagView(findViewById(R.id.search_tag_8))
         pokemonListView = findViewById(R.id.activity_main_pokemon_list_view)
+        noPokemonLinearLayout = findViewById(R.id.activity_main_no_pokemon_linear_layout)
 
-        adapter = PokemonListAdapter(this@MainActivity, pokemonArray)
+        adapter = PokemonListAdapter(this@MainActivity, pokemonArrayList)
         pokemonListView.adapter = adapter
 
-        progressBar.visibility = View.VISIBLE
-        pokemonListView.visibility = View.GONE
-        searchEditText.isEnabled = false
+        headerPokeBallImageView.setOnClickListener {
+            val animation = AnimationUtils.loadAnimation(this, R.anim.rotate_clockwise)
+            val popupMenu = PopupMenu(this, headerPokeBallImageView)
+            popupMenu.menuInflater.inflate(R.menu.menu_main, popupMenu.menu)
 
-        searchTag1.setText("Pikachu")
-        searchTag2.setText("Charizard")
-        searchTag3.setText("Mew")
-        searchTag4.setText("Arceus")
-        searchTag5.setText("Greninja")
-        searchTag6.setText("Cyndaquil")
-        searchTag7.setText("Bulbasaur")
-        searchTag8.setText("Mewtwo")
+            popupMenu.setOnMenuItemClickListener {
+                Toast.makeText(this, "Feature in development", Toast.LENGTH_SHORT).show()
+                return@setOnMenuItemClickListener true
+            }
+
+            popupMenu.show()
+            headerPokeBallImageView.startAnimation(animation)
+        }
 
         searchEditText.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
@@ -99,55 +87,87 @@ class MainActivity : AppCompatActivity() {
             clearSearchImageView.visibility = View.GONE
         }
 
-        popularSearchHeader.setOnClickListener {
-            when(popularSearchTagsLinearLayout.visibility) {
-                View.VISIBLE ->
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        popularSearchTagsLinearLayout.visibility = View.GONE
-                        popularSearchImageView.setImageDrawable(resources.getDrawable(R.drawable.ic_add, theme))
-                    }
-                    else {
-                        popularSearchTagsLinearLayout.visibility = View.GONE
-                        popularSearchImageView.setImageDrawable(resources.getDrawable(R.drawable.ic_add))
+        pokemonListView.setOnScrollListener(object : AbsListView.OnScrollListener{
+            override fun onScroll(view: AbsListView?, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
+                val lastItem = firstVisibleItem + visibleItemCount
+                if (lastItem == totalItemCount) {
+                    if (preLast != lastItem) {
+                        Log.d("End", "Reached end of list. Fetching more pokemon...")
+                        preLast = lastItem
                     }
 
-                View.GONE ->
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        popularSearchTagsLinearLayout.visibility = View.VISIBLE
-                        popularSearchImageView.setImageDrawable(resources.getDrawable(R.drawable.ic_cross, theme))
+                    if (nextUrl != "" && nextUrl != "null") {
+                        currentPageNumber++
+                        // This is added to show the loader
+                        if (pokemonArrayList[pokemonArrayList.size - 1].getID() != -1) {
+                            pokemonArrayList.add(PokemonModel(null))
+                            adapter.notifyDataSetChanged()
+                        }
+                        localAPIFetch()
                     }
-                    else {
-                        popularSearchTagsLinearLayout.visibility = View.VISIBLE
-                        popularSearchImageView.setImageDrawable(resources.getDrawable(R.drawable.ic_cross))
-                    }
+                }
             }
-        }
+
+            override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {}
+
+        })
 
         localAPIFetch()
     }
 
     private fun localAPIFetch() {
-        val favoritesList = SharedPref.getFavoritesList(this)
-        val url = Constants.apiPath + "/api/v1/pokemon/"
-        VolleyService.makeJSONArrayRequest(this@MainActivity, url, Request.Method.GET, null, tag,
-            object : VolleyService.JSONArrayInterface {
-                override fun onJSONArraySuccess(response: JSONArray) {
-                    for (i in 0 until response.length()) {
-                        pokemonArray[i] = PokemonModel(response[i] as JSONObject?)
-                        if (!favoritesList.isNullOrEmpty() && favoritesList.contains(pokemonArray[i].getID())) {
-                            pokemonArray[i].setFavorite(true)
-                        }
+        if (currentPageNumber == 1) {
+            progressBar.visibility = View.VISIBLE
+            pokemonListView.visibility = View.GONE
+
+        }
+        searchEditText.isEnabled = false
+        val url = Constants.apiPath + "/api/v1/pokemon/?page=" + currentPageNumber
+        VolleyService.makeJSONObjectRequest(this@MainActivity, url, Request.Method.GET, null, tag,
+            object : VolleyService.JSONObjectInterface {
+                override fun onJSONObjectSuccess(response: JSONObject) {
+                    nextUrl = response.getString("next")
+                    parseResponse(response.getJSONArray("results"))
+                    if (currentPageNumber == 1) {
+                        progressBar.visibility = View.GONE
+                        pokemonListView.visibility = View.VISIBLE
                     }
-                    progressBar.visibility = View.GONE
-                    pokemonListView.visibility = View.VISIBLE
                     searchEditText.isEnabled = true
                 }
 
                 override fun onError(error: VolleyError) {
-                    progressBar.visibility = View.GONE
+                    if (currentPageNumber == 1) {
+                        progressBar.visibility = View.GONE
+                    }
                     VolleyService.handleVolleyError(error, true, this@MainActivity)
+                    Log.d("Error", error.message.toString())
                 }
 
             })
+    }
+
+    private fun parseResponse(results: JSONArray) {
+        if (currentPageNumber > 1) {
+            pokemonArrayList.removeAt(pokemonArrayList.size - 1)
+        }
+        val favoritesList = SharedPref.getFavoritesList(this)
+        for (i in 0 until results.length()) {
+            val currentPokemonModel = PokemonModel(results[i] as JSONObject?)
+            if (!favoritesList.isNullOrEmpty() && favoritesList.contains(currentPokemonModel.getID())) {
+                currentPokemonModel.setFavorite(true)
+            }
+            pokemonArrayList.add(currentPokemonModel)
+        }
+        adapter.notifyDataSetChanged()
+    }
+
+    override fun noPokemonFiltered() {
+        noPokemonLinearLayout.visibility = View.VISIBLE
+        pokemonListView.visibility = View.GONE
+    }
+
+    override fun pokemonFiltered() {
+        noPokemonLinearLayout.visibility = View.GONE
+        pokemonListView.visibility = View.VISIBLE
     }
 }

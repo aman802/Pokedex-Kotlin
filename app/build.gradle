@@ -36,7 +36,7 @@ android {
             signingConfig signingConfigs.debug
         }
         debugDev {
-            buildConfigField 'String', 'API_PATH', '"http://5977b2ab.ngrok.io"'
+            buildConfigField 'String', 'API_PATH', '"http://69b34f37.ngrok.io"'
             minifyEnabled false
             debuggable true
             applicationIdSuffix '.debug.dev'

@@ -5,8 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingTop="16dp"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
     android:background="@android:color/white"
     tools:context=".activities.MainActivity">
 
@@ -14,199 +12,74 @@
         android:id="@+id/activity_main_header_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="PokéDB"
-            android:fontFamily="@font/reem_kufi"
-            android:textColor="@android:color/black"
-            android:textSize="40sp" />
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_pokeball_colored"
-            android:layout_gravity="center" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/activity_main_search_linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/activity_main_header_linear_layout"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:background="@drawable/background_search_elevated">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_search" />
-
-        <EditText
-            android:id="@+id/activity_main_search_edit_text"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginStart="10dp"
-            android:hint="Search for Pokémon or their moves"
-            android:textColorHint="#80000000"
-            android:gravity="center_vertical"
-            android:textSize="15sp"
-            android:fontFamily="sans-serif"
-            android:background="@android:color/transparent"/>
-
-        <ImageView
-            android:id="@+id/activity_main_clear_search_image_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_cross"
-            android:layout_marginStart="5dp"
-            android:visibility="gone"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/activity_main_popular_search_linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/activity_main_search_linear_layout"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
-        android:background="@drawable/background_search_elevated"
-        android:animateLayoutChanges="true">
+        android:background="@android:color/white"
+        android:elevation="10dp"
+        android:paddingBottom="16dp">
 
         <LinearLayout
-            android:id="@+id/activity_main_popular_search_header_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
 
             <TextView
-                android:id="@+id/activity_main_popular_search_text_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="sans-serif-medium"
-                android:text="Popular Searches"
+                android:text="PokéDB"
+                android:fontFamily="@font/reem_kufi"
                 android:textColor="@android:color/black"
-                android:visibility="visible"
-                android:textSize="15sp"
-                android:layout_gravity="center"/>
+                android:textSize="40sp" />
 
             <ImageView
-                android:id="@+id/activity_main_popular_search_image_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_cross"
-                android:padding="5dp" />
+                android:id="@+id/activity_main_header_pokeball_image_view"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_pokeball_colored"
+                android:layout_gravity="center" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/activity_main_popular_search_tags_linear_layout"
+            android:id="@+id/activity_main_search_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_search_new">
 
-            <LinearLayout
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_search" />
+
+            <EditText
+                android:id="@+id/activity_main_search_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp">
+                android:layout_marginStart="10dp"
+                android:hint="Search for Pokémon with name or id"
+                android:textColorHint="#80000000"
+                android:gravity="center_vertical"
+                android:textSize="15sp"
+                android:fontFamily="sans-serif"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:background="@android:color/transparent"/>
 
-                <include
-                    android:id="@+id/search_tag_1"
-                    layout="@layout/item_tag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <include
-                    android:id="@+id/search_tag_2"
-                    layout="@layout/item_tag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp">
-
-                <include
-                    android:id="@+id/search_tag_3"
-                    layout="@layout/item_tag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <include
-                    android:id="@+id/search_tag_4"
-                    layout="@layout/item_tag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp">
-
-                <include
-                    android:id="@+id/search_tag_5"
-                    layout="@layout/item_tag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <include
-                    android:id="@+id/search_tag_6"
-                    layout="@layout/item_tag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp">
-
-                <include
-                    android:id="@+id/search_tag_7"
-                    layout="@layout/item_tag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <include
-                    android:id="@+id/search_tag_8"
-                    layout="@layout/item_tag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp" />
-
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/activity_main_clear_search_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_cross"
+                android:layout_marginStart="5dp"
+                android:visibility="gone"/>
 
         </LinearLayout>
 
@@ -215,20 +88,22 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/activity_main_popular_search_linear_layout">
+        android:layout_below="@+id/activity_main_header_linear_layout">
 
         <ListView
             android:id="@+id/activity_main_pokemon_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="16dp"
-            android:clipToPadding="false"
             android:divider="@android:color/transparent"
             android:dividerHeight="10dp"
-            android:overScrollMode="never"
+            android:paddingTop="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             android:paddingBottom="16dp"
+            android:clipToPadding="false"
             android:scrollbars="none"
-            tools:listitem="@layout/item_pokemon_list_view" />
+            tools:listitem="@layout/item_pokemon_list_view"
+            android:visibility="visible"/>
 
         <ProgressBar
             android:id="@+id/activity_main_progress_bar"
@@ -236,6 +111,33 @@
             android:layout_height="40dp"
             android:layout_centerInParent="true"
             android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/activity_main_no_pokemon_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/surprised_pikachu" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Can't find any pokemon. How is that even possible?"
+                android:textSize="17sp"
+                android:textColor="@android:color/black"
+                android:textAlignment="center"
+                android:fontFamily="sans-serif-medium" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 
