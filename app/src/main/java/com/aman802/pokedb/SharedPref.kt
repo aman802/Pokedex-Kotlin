@@ -6,6 +6,20 @@ import java.lang.StringBuilder
 object SharedPref {
 
     @JvmStatic
+    fun isFirstLogin(context: Context): Boolean {
+        val sharedPreferences = context.getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE)
+        return sharedPreferences.getBoolean(Constants.IS_FIRST_LOGIN, true)
+    }
+
+    @JvmStatic
+    fun setFirstLogin(context: Context, isFirstLogin: Boolean) {
+        val sharedPreferences = context.getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(Constants.IS_FIRST_LOGIN, isFirstLogin)
+        editor.apply()
+    }
+
+    @JvmStatic
     fun getFavoritesList(context: Context): ArrayList<Int> {
         val arrayList = ArrayList<Int>()
         val sharedPreferences = context.getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE)

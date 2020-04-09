@@ -1,13 +1,16 @@
 package com.aman802.pokedb.activities
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import com.aman802.pokedb.Constants
 import com.aman802.pokedb.Helper
 import com.aman802.pokedb.R
@@ -20,10 +23,10 @@ import com.android.volley.VolleyError
 import org.json.JSONArray
 import org.json.JSONObject
 
-class MainActivity : AppCompatActivity(), PokemonListAdapter.onDataChanged {
+class MainActivity : AppCompatActivity(), PokemonListAdapter.OnDataChangedInterface {
 
     private val tag: String = MainActivity::class.java.simpleName
-    private var currentPageNumber = 1
+    private lateinit var alertDialog: AlertDialog
     private lateinit var progressBar: ProgressBar
     private lateinit var headerPokeBallImageView: ImageView
     private lateinit var searchEditText: EditText
@@ -32,8 +35,6 @@ class MainActivity : AppCompatActivity(), PokemonListAdapter.onDataChanged {
     private lateinit var noPokemonLinearLayout: LinearLayout
     private lateinit var adapter: PokemonListAdapter
     private val pokemonArrayList = ArrayList<PokemonModel>()
-    private var preLast = 0
-    private var nextUrl = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,58 +88,36 @@ class MainActivity : AppCompatActivity(), PokemonListAdapter.onDataChanged {
             clearSearchImageView.visibility = View.GONE
         }
 
-        pokemonListView.setOnScrollListener(object : AbsListView.OnScrollListener{
-            override fun onScroll(view: AbsListView?, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
-                val lastItem = firstVisibleItem + visibleItemCount
-                if (lastItem == totalItemCount) {
-                    if (preLast != lastItem) {
-                        Log.d("End", "Reached end of list. Fetching more pokemon...")
-                        preLast = lastItem
-                    }
-
-                    if (nextUrl != "" && nextUrl != "null") {
-                        currentPageNumber++
-                        // This is added to show the loader
-                        if (pokemonArrayList[pokemonArrayList.size - 1].getID() != -1) {
-                            pokemonArrayList.add(PokemonModel(null))
-                            adapter.notifyDataSetChanged()
-                        }
-                        localAPIFetch()
-                    }
-                }
-            }
-
-            override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {}
-
-        })
-
-        localAPIFetch()
+        val isFirstLogin = SharedPref.isFirstLogin(this)
+        if (isFirstLogin) {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_new_user, null, false)
+            val builder = AlertDialog.Builder(this)
+            builder.setView(dialogView)
+            builder.setPositiveButton("Ok", DialogInterface.OnClickListener { dialog, _ ->
+                localAPIFetch()
+                dialog.dismiss()
+            })
+            alertDialog = builder.create()
+            alertDialog.show()
+        }
     }
 
     private fun localAPIFetch() {
-        if (currentPageNumber == 1) {
-            progressBar.visibility = View.VISIBLE
-            pokemonListView.visibility = View.GONE
-
-        }
+        progressBar.visibility = View.VISIBLE
+        pokemonListView.visibility = View.GONE
         searchEditText.isEnabled = false
-        val url = Constants.apiPath + "/api/v1/pokemon/?page=" + currentPageNumber
+        val url = Constants.apiPath + "/pokemon/"
         VolleyService.makeJSONObjectRequest(this@MainActivity, url, Request.Method.GET, null, tag,
             object : VolleyService.JSONObjectInterface {
                 override fun onJSONObjectSuccess(response: JSONObject) {
-                    nextUrl = response.getString("next")
                     parseResponse(response.getJSONArray("results"))
-                    if (currentPageNumber == 1) {
-                        progressBar.visibility = View.GONE
-                        pokemonListView.visibility = View.VISIBLE
-                    }
+                    progressBar.visibility = View.GONE
+                    pokemonListView.visibility = View.VISIBLE
                     searchEditText.isEnabled = true
                 }
 
                 override fun onError(error: VolleyError) {
-                    if (currentPageNumber == 1) {
-                        progressBar.visibility = View.GONE
-                    }
+                    progressBar.visibility = View.GONE
                     VolleyService.handleVolleyError(error, true, this@MainActivity)
                     Log.d("Error", error.message.toString())
                 }
@@ -147,9 +126,6 @@ class MainActivity : AppCompatActivity(), PokemonListAdapter.onDataChanged {
     }
 
     private fun parseResponse(results: JSONArray) {
-        if (currentPageNumber > 1) {
-            pokemonArrayList.removeAt(pokemonArrayList.size - 1)
-        }
         val favoritesList = SharedPref.getFavoritesList(this)
         for (i in 0 until results.length()) {
             val currentPokemonModel = PokemonModel(results[i] as JSONObject?)

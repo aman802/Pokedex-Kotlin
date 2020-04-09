@@ -24,7 +24,7 @@ android {
     }
     buildTypes {
         debugLocal {
-            buildConfigField 'String', 'API_PATH', '"http://10.0.2.2:8000"'
+            buildConfigField 'String', 'API_PATH', '"http://10.0.2.2:8000/api"'
             minifyEnabled false
             debuggable true
             applicationIdSuffix '.debug.local'
@@ -36,7 +36,7 @@ android {
             signingConfig signingConfigs.debug
         }
         debugDev {
-            buildConfigField 'String', 'API_PATH', '"http://69b34f37.ngrok.io"'
+            buildConfigField 'String', 'API_PATH', '"http://69b34f37.ngrok.io/api"'
             minifyEnabled false
             debuggable true
             applicationIdSuffix '.debug.dev'
